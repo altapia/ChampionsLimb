@@ -6,13 +6,13 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
 			padding-top: 60px;
 		}
 	</style>
-	<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap-responsive.min.css" rel="stylesheet">
     
      <script language="javascript">
 	 
@@ -45,10 +45,10 @@
     
 </head>
 <body>
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" href="../" style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" height="30"> CHAMPIONS<strong>Limb</strong></a>
+				<a class="brand" href=".." style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong></a>
 				<ul class="nav">
 					<!--<li><a href="../">Home</a></li>-->
 					<li class="dropdown active" id="menu1">
@@ -73,7 +73,7 @@
 
 <div class="span8">
     <div class="container">
-        <h1>Fase de grupos</h1>
+        <h2>Fase de grupos</h2>
 					
 <? include "../pages/conexion_bd.php"; ?>
 
@@ -261,7 +261,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
 						echo '</td>';
 						echo '<td>'.$rowApu["apuesta"].'</td>';
 						echo '<td style="text-align:center">'.$rowApu["cotizacion"].'</td>';
-						echo '<td style="text-align:center">'.$rowApu["apostado"].'€</td>';
+						echo '<td style="text-align:center">'.$rowApu["apostado"].'&euro;</td>';
 						echo '<td style="text-align:center">';
 							$ganancia=0;
 							if($rowApu["acertada"]==1){
@@ -269,7 +269,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
 							}else if($rowApu["acertada"]==2){
 								$ganancia=$rowApu["apostado"] * -1;
 							}
-							echo $ganancia.'€';
+							echo $ganancia.'&euro;';
 							$totalGan=$totalGan+ $ganancia;
 						echo '</td>';
                    	echo '</tr>';
@@ -291,7 +291,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
  </div>
  </div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap_new/js/bootstrap.min.js"></script>
 </body>
 </html>
 

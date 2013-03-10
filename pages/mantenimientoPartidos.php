@@ -6,16 +6,16 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
 			padding-top: 60px;
 		}
 	</style>
-	<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap-responsive.min.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../bootstrap/js/bootstrap-datepicker.js"></script>
+	<script src="../bootstrap_new/js/bootstrap.min.js"></script>
+    <script src="../bootstrap_new/js/bootstrap-datepicker.js"></script>
     <script language="javascript">
 		/*$('.datepicker').datepicker();
 		$('#dp1').datepicker().on('changeDate', function(ev){
@@ -120,13 +120,92 @@
 			//window.location.reload();
 		}
 		
+		
+		function actualizarTodosApuestas(id){
+			/*$('#form_29 :input').each(function(){
+					alert($(this).val());
+			});*/
+			
+			
+			totalAct=0;
+			var wid_padre = $("#prog_bar_padre").css('width');
+			var value_padre= parseInt(wid_padre, 10);
+			
+			var nomform = "formapuespart" + id;
+			var total= $('form[name|="'+nomform+'"]').length;
+
+			var incremento=value_padre/total;
+			
+			$('form[name|="'+nomform+'"]').each(function(){
+				 // var id= $(this).children('input[name|="id"]').val();
+				 var parametros = {
+					"apuesta" : $(this).children('input[name|="apuesta"]').val(),
+					"cotizacion" : $(this).children('input[name|="cotizacion"]').val(),
+					"apostado" : $(this).children('input[name|="apostado"]').val(),
+					"acertada" : $(this).children('select[name|="acertada"]').val(),
+					"id" : $(this).children('input[name|="id"]').val()
+				};
+				// alert("cotizacion:" + $(this).children('input[name|="cotizacion"]').val());
+				$.ajax({
+					data:  parametros,
+					url:   'actualizarApuesta.php',
+					type:  'post',
+					async: 'false',
+					beforeSend: function () {
+							$('#modal_ajax').modal('show');
+					},
+					success:  function (response) {
+						$("#resultado").html($("#resultado").html()+'<br>'+response);
+							
+					},
+					complete: function(){
+						//alert('actualizado id: '+ id);
+						
+						var wid = $("#prog_bar").css('width');
+						var value= parseInt(wid, 10);
+						//var value = wid.substring(0,wid.indexof('px'));
+						//alert(value+'--'+(value+(100/total)));
+						
+						var aux = value + incremento;
+						$("#prog_bar").css('width',aux);
+						//$("#resultado").html($("#resultado").html()+'<br>'+wid+'--'+total+'--'+aux);
+						//$("#prog_bar").attr('style','width: '+(value+(100/total))+'%');
+						
+						totalAct=totalAct+1;
+						if(totalAct==total){
+							// alert(document.URL);
+							var aux=document.URL + "";
+							if(aux.indexOf('&partido')<0 && aux.indexOf('?partido')<0){
+								document.location.href=document.URL + '&partido='+id;
+							}else{
+								var ini = document.URL.indexOf('partido=') + 8;
+								var fin = document.URL.indexOf('&',ini);
+								if(fin>0){
+									var newurl = document.URL.substr('0',ini) + id + document.URL.substr(fin);
+									// alert(newurl);
+								}else{
+									var newurl = document.URL.substr('0',ini) + id;
+									// alert(newurl);
+								}
+								document.location.href=newurl;
+							}
+							// window.location.reload();
+						}
+					}
+        		});
+				
+			});
+	
+			//window.location.reload();
+			
+		}
 	</script>
 </head>
 <body> 
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" href="../" style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" height="30"> CHAMPIONS<strong>Limb</strong></a>
+				<a class="brand" href=".." style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong></a>
 				<ul class="nav">
 					<!-- <li><a href="../">Home</a></li> -->
 					<li class="dropdown active" id="menu1">
@@ -142,6 +221,7 @@
 							<li><a href="../pages/final.php">Final</a></li> -->
 						</ul>
 					</li>
+					<li><a href="../pages/apuestas.php">Apuestas</a></li>
                     <li><a href="../pages/clasificacion.php">Clasificación</a></li>
 				</ul>
 			</div>
@@ -251,7 +331,7 @@
 
 <div class="span8">
 	<div class="container">
-		<h1>Mantenimiento de partidos</h1>
+		<h2>Mantenimiento de partidos</h2>
 		
 		<div class="alert alert-success">
 			
@@ -510,7 +590,7 @@ $resultAP=mysql_query('SELECT id, apuesta, cotizacion, apostado, acertada FROM a
 <div class="modal hiden fade in" id="myModal<? echo $row["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	 aria-hidden="true" style="display: none;">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
     <h3 id="myModalLabel">Apuestas para el partido </h3>
   </div>
   <div class="modal-body">
@@ -529,7 +609,7 @@ $resultAP=mysql_query('SELECT id, apuesta, cotizacion, apostado, acertada FROM a
                 <?
 	                while ($rowAP=mysql_fetch_array($resultAP)) {		                	
 	                		echo '<tr><td colspan="6">';
-	                			echo '<form class="form-inline" id="apues'.$rowAP["id"].'" action="" style="margin: 0px;">';
+	                			echo '<form class="form-inline" id="apues'.$rowAP["id"].'" name="formapuespart'.$row["id"].'" action="" style="margin: 0px;">';
 	                			echo '<a class="btn btn-mini btn-danger" href="javascript:borrarAP('.$rowAP["id"].');">
 	                						<i class="icon-remove icon-white"></i></a> ';
 		                		echo '<input type="text" class="input-medium" name="apuesta" value="'.$rowAP["apuesta"].'"> ';
@@ -560,7 +640,7 @@ $resultAP=mysql_query('SELECT id, apuesta, cotizacion, apostado, acertada FROM a
                 ?>
                 <tr>
                 	<td colspan="6" style="background-color:#CCC;text-align: center;vertical-align: middle;">
-    					<a class="btn btn-mini btn-success" href="javascript:actualizarTodosApuestas();">
+    					<a class="btn btn-mini btn-success" href="javascript:actualizarTodosApuestas(<?echo $row["id"]; ?>);">
 							<i class="icon-upload icon-white"></i> 
                 			Actualizar Todos
             			</a>
@@ -596,7 +676,7 @@ $resultAP=mysql_query('SELECT id, apuesta, cotizacion, apostado, acertada FROM a
 
     <div class="modal hiden fade" id="modal_ajax" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="javascript:window.location.reload();">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onClick="javascript:window.location.reload();">x</button>
             <h3 id="myModalLabel">Actualizando partidos ...</h3>
           </div>
           <div class="modal-body">

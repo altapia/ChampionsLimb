@@ -48,8 +48,9 @@
 	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" href="../" style="vertical-align:middle">
-					<img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong></a>
+				<a class="brand" href=".." style="vertical-align:middle">
+					<img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong>
+				</a>
 				<ul class="nav">
 					<!--<li><a href="../">Home</a></li>-->
 					<li class="dropdown active" id="menu1">
@@ -77,35 +78,17 @@
     	
 		<? include "../pages/conexion_bd.php"; ?>
 
-			<div class="dropdown">
-				
-			  <a class="dropdown-toggle" data-toggle="dropdown" role="button" href="#">
-			  	<span style="font-size:xx-large"><strong>Octavos de final</strong></span>
-			  	<span class="badge badge-info" style="padding-right: 1px;padding-left: 1px;">
-			  		<i class="icon-chevron-down icon-white"></i>
-			  	</span>			  	
-			  </a>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-				   <li <? if($_GET["ronda"]=="ida"){echo 'class="disabled"';} ?> >
-				   		<a tabindex="-1" href="./octavos.php?ronda=ida">Ida</a>
-				   </li>
-					<li <? if($_GET["ronda"]=="vuelta"){echo 'class="disabled"';} ?> >
-						<a tabindex="-1" href="./octavos.php?ronda=vuelta">Vuelta</a>
-					</li>
-				  <li class="dropdown-submenu">
-				    <a tabindex="-1" href="#">Apostantes</a>
-				    <ul class="dropdown-menu">
-				    <? 
-								//Ejecutamos la sentencia SQL
-								$result=mysql_query("select nombre, id from apostantes order by nombre asc");		
-								while ($row=mysql_fetch_array($result)) {						
-								  echo '<li><a tabindex="-1" href="./octavos.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
-								}mysql_free_result($result);
-						?>
-				    </ul>
-				  </li>
-				</ul>
-			</div>
+			<h2>Octavos de final</h2>
+			
+			
+			<ul class="nav nav-tabs">
+				<li <? if($_GET["ronda"]=="ida"){ echo 'class="active"';}?>>
+					<a href="./octavos.php?ronda=ida">Ida</a>
+				</li>
+				<li <? if($_GET["ronda"]=="vuelta"){ echo 'class="active"';}?>>
+					<a href="./octavos.php?ronda=vuelta">Vuelta</a>
+				</li>
+			</ul>
 
 <? 
 if($_GET["ronda"]!="" || $_GET["apostante"]!=""){ 
@@ -227,7 +210,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
 						echo '</td>';
 						echo '<td>'.$rowApu["apuesta"].'</td>';
 						echo '<td style="text-align:center">'.$rowApu["cotizacion"].'</td>';
-						echo '<td style="text-align:center">'.$rowApu["apostado"].'€</td>';
+						echo '<td style="text-align:center">'.$rowApu["apostado"].'&euro;</td>';
 						echo '<td style="text-align:center">';
 							$ganancia=0;
 							if($rowApu["acertada"]==1){
@@ -235,7 +218,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
 							}else if($rowApu["acertada"]==2){
 								$ganancia=$rowApu["apostado"] * -1;
 							}
-							echo $ganancia.'€';
+							echo $ganancia.'&euro;';
 							$totalGan=$totalGan+ $ganancia;
 						echo '</td>';
                    	echo '</tr>';
@@ -254,6 +237,23 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
             </tbody>
         </table>                   
 <? }?>
+
+<div class="tabbable tabs-below pull-right">
+  <ul class="nav nav-tabs">
+  	<? 
+		//Ejecutamos la sentencia SQL
+		$result=mysql_query("select nombre, id from apostantes order by nombre asc");		
+		while ($row=mysql_fetch_array($result)) {
+			if($_GET["apostante"]==$row["id"]){
+				echo '<li class="active"><a href="./octavos.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
+			}else{						
+		  		echo '<li><a href="./octavos.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
+			}
+		}mysql_free_result($result);
+	?>
+  </ul>
+</div>
+
  </div>
  </div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>

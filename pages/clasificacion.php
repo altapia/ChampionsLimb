@@ -6,13 +6,13 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
 			padding-top: 60px;
 		}
 	</style>
-	<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap-responsive.min.css" rel="stylesheet">
 
 	<!-- Google Charts -->
 <?
@@ -240,10 +240,10 @@ include "../pages/conexion_bd.php";
 </head>
 <body>
 
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" href="../" style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" height="30"> CHAMPIONS<strong>Limb</strong></a>
+				<a class="brand" href=".." style="vertical-align:middle"><img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong></a>
 				<ul class="nav">
 					<!--<li><a href="../">Home</a></li>-->
 					<li class="dropdown" id="menu1">
@@ -272,7 +272,7 @@ include_once "../pages/iconos_usuarios.php";
 ?>
 			<div class="span10">
 				<div class="container">
-					<h1>Clasificación de apostantes</h1>
+					<h2>Clasificación de apostantes</h2>
 
 
 <!-- FASE DE GRUPOS-->
@@ -330,7 +330,7 @@ $tot_gan=0;
 
 	<script
 		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
+	<script src="../bootstrap_new/js/bootstrap.min.js"></script>
 </body>
 </html>
 
