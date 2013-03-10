@@ -66,7 +66,7 @@ body {
 					<!--<li class="active"><a href="#">Home</a></li>-->
 					<li  class="dropdown" id="menu1">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							Partidoss
+							Partidos
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
