@@ -174,17 +174,27 @@
 						totalAct=totalAct+1;
 						if(totalAct==total){
 							// alert(document.URL);
-							var aux=document.URL + "";
-							if(aux.indexOf('&partido')<0 && aux.indexOf('?partido')<0){
-								document.location.href=document.URL + '&partido='+id;
-							}else{
-								var ini = document.URL.indexOf('partido=') + 8;
-								var fin = document.URL.indexOf('&',ini);
+							var url=document.URL + "";
+							//Quitamos el parámetro query
+							if(url.indexOf('&query')>0 || url.indexOf('?query')>0){
+								var ini = url.indexOf('query=') + 6;
+								var fin = url.indexOf('&',ini);
 								if(fin>0){
-									var newurl = document.URL.substr('0',ini) + id + document.URL.substr(fin);
+									url=url.substr(0,ini)+url.substr(fin,url.length);
+								}else{
+									url=url.substr(0,ini);
+								}
+							}
+							if(url.indexOf('&partido')<0 && url.indexOf('?partido')<0){
+								document.location.href=url + '&partido='+id;
+							}else{
+								var ini = url.indexOf('partido=') + 8;
+								var fin = url.indexOf('&',ini);
+								if(fin>0){
+									var newurl = url.substr('0',ini) + id + url.substr(fin);
 									// alert(newurl);
 								}else{
-									var newurl = document.URL.substr('0',ini) + id;
+									var newurl = url.substr('0',ini) + id;
 									// alert(newurl);
 								}
 								document.location.href=newurl;
