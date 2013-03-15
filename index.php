@@ -72,6 +72,7 @@ body {
 						<ul class="dropdown-menu">
 							<li><a href="./pages/faseGrupos.php">Fase de grupos</a></li>
 							<li><a href="./pages/octavos.php">Octavos de final</a></li>
+							<li><a href="./pages/cuartos.php">Cuartos de final</a></li>
 							<!-- <li><a href="./pages/semifinal.php">Semifinal</a></li>
 							<li><a href="./pages/final.php">Final</a></li>-->
 						</ul>

@@ -61,8 +61,8 @@
 						<ul class="dropdown-menu active">
 							<li><a href="../pages/faseGrupos.php">Fase de grupos</a></li>
 							<li class="active"><a href="#">Octavos de final</a></li>
-							<!--<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
-							<li><a href="../pages/semifinal.php">Semifinal</a></li>
+							<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
+<!--							<li><a href="../pages/semifinal.php">Semifinal</a></li>
 							<li><a href="../pages/final.php">Final</a></li>-->
 						</ul>
 					</li>
@@ -82,10 +82,13 @@
 			
 			
 			<ul class="nav nav-tabs">
+				<li <? if($_GET["ronda"]=="todos" || ($_GET["ronda"]=="" &&  $_GET["apostante"]=="")){ echo 'class="active"';}?>>
+					<a href="./octavos.php?ronda=todos">Todos</a>
+				</li>
 				<li <? if($_GET["ronda"]=="ida"){ echo 'class="active"';}?>>
 					<a href="./octavos.php?ronda=ida">Ida</a>
 				</li>
-				<li <? if($_GET["ronda"]=="vuelta"){ echo 'class="active"';}?>>
+				<li <? if($_GET["ronda"]=="vuelta" ){ echo 'class="active"';}?>>
 					<a href="./octavos.php?ronda=vuelta">Vuelta</a>
 				</li>
 			</ul>
@@ -100,6 +103,7 @@ if($_GET["ronda"]!="" || $_GET["apostante"]!=""){
 					WHERE p.local=e.id and p.visitante=f.id and p.fase="OCTAVOS"
 					ORDER BY p.fecha, p.hora,p.id asc
 					LIMIT 8';
+					$result=mysql_query($query);
 		}elseif($_GET["ronda"]=="vuelta"){
 			echo '<h4>Partidos de vuelta</h4>';
 			$query='SELECT p.id, e.nombre as local, f.nombre as visitante, p.fecha, p.hora, p.apostante, p.resultado, e.escudo as escLocal, f.escudo as escVisit 
@@ -107,18 +111,37 @@ if($_GET["ronda"]!="" || $_GET["apostante"]!=""){
 					WHERE p.local=e.id and p.visitante=f.id and p.fase="OCTAVOS"
 					ORDER BY p.fecha , p.hora ,p.id asc
 					LIMIT 8,8';
-		}
-		$result=mysql_query($query);
+					$result=mysql_query($query);
+		}else if($_GET["ronda"]=="todos"){
+			echo '<h4>Todos los partidos</h4>';
+			$query='SELECT p.id, e.nombre as local, f.nombre as visitante, p.fecha, p.hora, p.apostante, p.resultado, e.escudo as escLocal, f.escudo as escVisit 
+					FROM partidos p, equipos e, equipos f 
+					WHERE p.local=e.id and p.visitante=f.id and p.fase="OCTAVOS"
+					ORDER BY p.fecha , p.hora ,p.id asc;';
+			$result=mysql_query($query);
+		}		
 	}else if($_GET["apostante"]!=""){
 		echo '<h4>Encuentros de '.$_GET["apostanteNom"].' </h4>';
 			$query='SELECT p.id, e.nombre as local, f.nombre as visitante, p.fecha, p.hora, p.apostante, p.resultado, e.escudo as escLocal, f.escudo as escVisit 
 					FROM partidos p, equipos e, equipos f 
 					WHERE p.local=e.id and p.visitante=f.id and p.apostante='.$_GET["apostante"].' and p.fase="OCTAVOS"
 					ORDER BY p.fecha, p.hora,p.id asc';
+	$result=mysql_query($query);
 	}
+
+}else{
+	echo '<h4>Todos los partidos</h4>';
+			$query='SELECT p.id, e.nombre as local, f.nombre as visitante, p.fecha, p.hora, p.apostante, p.resultado, e.escudo as escLocal, f.escudo as escVisit 
+					FROM partidos p, equipos e, equipos f 
+					WHERE p.local=e.id and p.visitante=f.id and p.fase="OCTAVOS"
+					ORDER BY p.fecha , p.hora ,p.id asc;';
 	//Ejecutamos la sentencia SQL
 		$result=mysql_query($query);
+	}
 echo mysql_error();
+if($result!=NULL){
+	$num_rows = mysql_num_rows($result);
+	if($num_rows!=NULL || $num_rows > 0){
 ?>
         
         <table class="table table-condensed">
@@ -137,6 +160,7 @@ echo mysql_error();
             <tbody>
             
 <?
+	}
 	function selectApostadores($i){
 		$select = '<select  disabled="disabled" style="width: 100px;"><option value="0"></option>';
 		$query='SELECT id, nombre  FROM apostantes ORDER BY nombre asc';
@@ -224,7 +248,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
                    	echo '</tr>';
 				}mysql_free_result($resultApuestas);
 				echo mysql_error();
-				echo '<tr><td style="text-align:right" colspan="4"><strong>Ganancia Total</strong></td><td>'.$totalGan.'</td></tr>';
+				echo '<tr><td style="text-align:right" colspan="4"><strong>Ganancia Total</strong></td><td>'.$totalGan.'&euro;</td></tr>';
 			?>
                   
             </tbody>

@@ -226,13 +226,13 @@
 						<ul class="dropdown-menu active">
 							<li><a href="../pages/faseGrupos.php">Fase de grupos</a></li>
 							<li><a href="../pages/octavos.php">Octavos de final</a></li>
-							<!-- <li class="active"><a href="#">Cuartos de final</a></li>
-							<li><a href="../pages/semifinal.php">Semifinal</a></li>
+							<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
+							<!-- <li><a href="../pages/semifinal.php">Semifinal</a></li>
 							<li><a href="../pages/final.php">Final</a></li> -->
 						</ul>
 					</li>
 					<li><a href="../pages/apuestas.php">Apuestas</a></li>
-                    <li><a href="../pages/clasificacion.php">Clasificación</a></li>
+					<li><a href="../pages/clasificacion.php">Clasificación</a></li>
 				</ul>
 			</div>
 		</div>
