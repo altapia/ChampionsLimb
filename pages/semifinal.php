@@ -63,7 +63,7 @@
 							<li><a href="../pages/octavos.php">Octavos de final</a></li>
 							<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
 							<li class="active"><a href="#">Semifinal</a></li>
-							<!--<li><a href="../pages/final.php">Final</a></li>-->
+							<li><a href="../pages/final.php">Final</a></li>
 						</ul>
 					</li>
 					<li><a href="../pages/apuestas.php">Apuestas</a></li>
@@ -269,7 +269,7 @@ $fecha_actual = strtotime(date("d-m-Y",time()));
 			if($_GET["apostante"]==$row["id"]){
 				echo '<li class="active"><a href="./semifinal.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
 			}else{						
-		  		echo '<li><a href="./s.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
+		  		echo '<li><a href="./semifinal.php?apostante='.$row["id"].'&apostanteNom='.$row["nombre"].'">'.$row["nombre"].'</a>';
 			}
 		}mysql_free_result($result);
 	?>

@@ -2,26 +2,57 @@
 <html lang="es">
 <head>
 	<meta charset="ISO-8859-1">
-	<title>EURO 2012</title>
+	<title>Champions Limb</title>
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		body {
 			padding-top: 60px;
 		}
 	</style>
-	<link href="../bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="../bootstrap_new/css/bootstrap-responsive.min.css" rel="stylesheet">
+    
+     <script language="javascript">
+	 
+	 	var plegadoTodo=0;
+		function desplegarTodos(){
+			
+			if(plegadoTodo==0){
+				plegadoTodo=1;
+				$('#btn_desplegar').html('<i class="icon-minus icon-white"></i> Plegar todos');	
+				$(".collapse").collapse("show");  
+				$('i[name|="icono_toggle"]').attr("class","icon-minus icon-white");	
+			}else{
+				plegadoTodo=0;
+				$('#btn_desplegar').html('<i class="icon-plus icon-white"></i> Desplegar todos');	
+				$(".collapse").collapse("hide"); 
+				$('i[name|="icono_toggle"]').attr("class","icon-plus icon-white");	
+			}
+		}
+		
+		
+		function cambiarIco(i){
+			if($('#ico'+i).attr("class")=="icon-plus icon-white"){
+				$('#ico'+i).attr("class","icon-minus icon-white");
+			}else{
+				$('#ico'+i).attr("class","icon-plus icon-white");
+			}
+		}
+		
+	</script>
+    
 </head>
 <body>
-<?php include_once("analyticstracking.php") ?>
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" href="#" style="vertical-align:top"><img src="../images/eurologo.png" height="20" style="vertical-align:top"> EURO<strong style="vertical-align:top">Limbo</strong> 2012</a>
+				<a class="brand" href=".." style="vertical-align:middle">
+					<img src="../images/champions-league-logo_trans.png" style="height:30px;"> CHAMPIONS<strong>Limb</strong>
+				</a>
 				<ul class="nav">
-					<li><a href="../">Home</a></li>
+					<!--<li><a href="../">Home</a></li>-->
 					<li class="dropdown active" id="menu1">
                     	<a class="dropdown-toggle" data-toggle="dropdown"  href="#">
                     		 Partidos
@@ -29,165 +60,163 @@
 						</a>
 						<ul class="dropdown-menu active">
 							<li><a href="../pages/faseGrupos.php">Fase de grupos</a></li>
+							<li><a href="../pages/octavos.php">Octavos de final</a></li>
 							<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
 							<li><a href="../pages/semifinal.php">Semifinal</a></li>
-							<li class="active"><a href="#">Final</a></li>
+							<li class="active"><a href="../pages/final.php">Final</a></li>
 						</ul>
 					</li>
-                    <li><a href="../pages/clasificacion.php">Clasificación</a></li>
+					<li><a href="../pages/apuestas.php">Apuestas</a></li>
+					<li><a href="../pages/clasificacion.php">Clasificación</a></li>
 				</ul>
 			</div>
-		</div>
+			</div>
 	</div>
 
+<div class="span8">
+    <div class="container">
+    	
+		<? include "../pages/conexion_bd.php"; ?>
 
-<!--
-	<div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span2">
-				<ul class="nav nav-list">
-					<li class="nav-header">Fase de Grupos</li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo A</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo B</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo C</a></li>
-					<li><a href="#"> <i class="icon-book"></i> Grupo D</a></li>
-				</ul>
-			</div>-->
-			<div class="span10">
-				<div class="container">
-					<h1>Final</h1>
-					<p>Apuesta de <strong>395,45€</strong>.</p>
+			<h2>Final</h2>
+			<p>Destinado a apuestas para este partido: <strong>276.21€</strong></p>
+<? 
+			$query='SELECT p.id, e.nombre as local, f.nombre as visitante, p.fecha, p.hora, p.apostante, p.resultado, e.escudo as escLocal, f.escudo as escVisit 
+					FROM partidos p, equipos e, equipos f 
+					WHERE p.local=e.id and p.visitante=f.id and p.fase="FINAL"
+					ORDER BY p.fecha , p.hora ,p.id asc;';
+	//Ejecutamos la sentencia SQL
+		$result=mysql_query($query);
+echo mysql_error();
 
+if($result!=NULL){
+	$num_rows = mysql_num_rows($result);
+	if($num_rows!=NULL || $num_rows > 0){
+?>
+        
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                	<th style="text-align:center">
+                    	<a class="btn btn-mini btn-info" href="javascript:desplegarTodos();" id="btn_desplegar">
+                        	<i class="icon-plus icon-white"></i> 
+                            Desplegar todos
+                        </a>
+                    </th>						
+                    <th colspan="3" style="text-align:center">Partido</th>
+                    <th style="text-align:left">Apostante</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+<?
+	}
+
+	function selectApostadores($i){
+		$select = '<select  disabled="disabled" style="width: 100px;"><option value="0"></option>';
+		$query='SELECT id, nombre  FROM apostantes ORDER BY nombre asc';
+		$result=mysql_query($query);
+		while ($row=mysql_fetch_array($result)) {
+			if($row[id]==$i){
+				$select=$select.'<option selected="selected" value="'.$row[id].'">'.$row[nombre].'</option>';
+			}else{
+				$select=$select.'<option value="'.$row[id].'">'.$row[nombre].'</option>';
+			}
+		}mysql_free_result($result);
+		$select=$select.'</select>';
+		return $select;
+	}
+?>
 
 <? 
-include "../pages/conexion_bd.php";
-if($_GET["query"]==1){
-	
-	//echo $_GET["query"].'<br>';
 
-	$resultado= $_GET["resultado"];
-	$apuesta= $_GET["apuesta"];
-	$apostante= $_GET["apostante"];
-	$cuota= $_GET["cuota"];
-	$ganancia= $_GET["ganancia"];
-	$id=$_GET["id"];
-	$comentario=$_GET["comentario"];
-	
-	$result= mysql_query("UPDATE partidos set 
-		apostante='$apostante',
-		resultado='$resultado',
-		apuesta='$apuesta',
-		cuota='$cuota',
-		ganancia='$ganancia',
-		comentario='$comentario'
-		 WHERE id=$id;");
-	//$query="UPDATE EURO2012.partidos set apostante='$culo' where id=14;";
-	//$query="UPDATE EURO2012.partidos set apostante='aa' where id=14;";
-	//mysql_close($mycon);
-	echo 'Query ejecutada con resultado='.$result.'<br>';
-	
-}elseif($_GET["query"]==2){
-	
-	echo $_GET["query"].'<br>';
-	
-	$fecha= $_GET["fecha"];
-	$band_local= $_GET["band_local"];
-	$band_visit= $_GET["band_visit"];
-	$partido= $_GET["partido"];
-	$resultado= $_GET["resultado"];
-	$apuesta= $_GET["apuesta"];
-	$apostante= $_GET["apostante"];
-	$cuota= $_GET["cuota"];
-	$ganancia= $_GET["ganancia"];
-	$id=$_GET["id"];
-	$comentario=$_GET["comentario"];
-	
-	if(!mysql_query("INSERT INTO partidos
-(PARTIDO,FECHA,RESULTADO,APOSTANTE,APUESTA,CUOTA,GANANCIA,FASE,BAND_LOCAL,BAND_VISIT,COMENTARIO)
-VALUES ('$partido', '$fecha', '$resultado', '$apostante', '$apuesta', '$cuota', '$ganancia','FINAL','$band_local', '$band_visit', '$comentario') ")){
-	//$query="UPDATE EURO2012.partidos set apostante='$culo' where id=14;";
-	//$query="UPDATE EURO2012.partidos set apostante='aa' where id=14;";
-	//mysql_close($mycon);
-	
-  die('Error: ' . mysql_error());
-  }
-	echo 'Query ejecutada con resultado='.$result.'<br>';
-	
-}
-?>
-<!-- GRUPO A-->
-					<?
-                    //Ejecutamos la sentencia SQL
-                    $result=mysql_query("SELECT  ID as id,FECHA as fecha, PARTIDO as partido, RESULTADO as resultado, APUESTA as apuesta, 
-										APOSTANTE as apostante, CUOTA as cuota, GANANCIA as ganancia, BAND_LOCAL as band_local, 
-										BAND_VISIT as band_visit, COMENTARIO as comentario 
-                                        FROM partidos 
-                                        WHERE FASE='FINAL' 
-                                        ORDER BY FECHA ASC");
+$fecha_actual = strtotime(date("d-m-Y",time()));
+            
+				while ($row=mysql_fetch_array($result)) {						
+					echo '<tr>';
+						echo '<td rowspan="2" style="text-align: center;vertical-align: middle;">'; 
+							echo '<a class="btn btn-mini btn-info" data-toggle="collapse" data-target="#comment'.$row["id"].'"onclick="cambiarIco('.$row["id"].')" href="#'.$row["id"].'">'; 
+							echo '<i id="ico'.$row["id"].'" name="icono_toggle" class="icon-plus icon-white"></i></a>';							
+							echo '</td>';
+						echo '<td rowspan="2" style="text-align: right;vertical-align: middle;">';						
+						echo $row["local"].' <img src="../images/escudos/'.$row["escLocal"].'"></td>';
+						$date = date_create($row["fecha"]);
+						echo '<td style="text-align: center;vertical-align: middle;">'.date_format($date, 'd/m/Y').'</td>';
+						echo '<td rowspan="2" style="text-align: left;vertical-align: middle;"><img src="../images/escudos/'.$row["escVisit"].'"> '.$row["visitante"].'</td>';
+						echo '<td rowspan="2" style="text-align: left;vertical-align: middle;">'.selectApostadores($row["apostante"]);
+						$fecha_partido = strtotime($row["fecha"]);            
+							if($fecha_partido==$fecha_actual){
+								echo ' <span class="badge badge-warning" style="padding-right: 1px;padding-left: 1px;"><i class="icon-fire icon-white"></i> </span>';
+							}else if($fecha_partido < $fecha_actual){
+								echo ' <span class="badge" style="padding-right: 1px;padding-left: 1px;"><i class="icon-ok icon-white"></i> </span>';
+							}else{
+								echo ' <span class="badge badge-info" style="padding-right: 1px;padding-left: 1px;"><i class="icon-time icon-white"></i> </span>';
+							}
+						echo '</td>';
+					echo '</tr>';
+					echo '<tr><td style="text-align: center;vertical-align: middle;">'.substr($row["hora"],0,5).'</td></tr>';
+					echo '<tr><td colspan="5" style="padding: 0px 0px 0px 0px"><div id="comment'.$row["id"].'" name="tabla_apuestas" class="collapse" style="margin-bottom:0px;margin-left:40px;margin-right:40px;border-radius:0px 0px 4px 4px;">'; 
+							?>
+           <table class="table table-condensed">
+            <thead>
+                <tr>						
+                    <th colspan="2" style="text-align:center">Apuesta</th>
+                    <th style="text-align:center">Cotización</th>
+                    <th style="text-align:center">Apostado</th>
+                    <th style="text-align:center">Ganancia</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?
+				$queryApuestas='select apuesta, apostado, cotizacion, acertada from apuestas where partido ='.$row["id"].' order by id asc';
+				$resultApuestas=mysql_query($queryApuestas);
+				$totalGan=0;
+				while ($rowApu=mysql_fetch_array($resultApuestas)) {
 					
-                    ?>
-									<table class="table table-bordered">
-						<thead>
-							<tr>
-							<?
-								if($_GET["admin"]=="anopeludo"){
-									echo '<th style="text-align:center">Fecha del partido</th>';
-								}else{
-									echo '<th style="text-align:center" colspan="2">Fecha del partido</th>';
-								}
-							?>								
-								<th style="text-align:center">Partido</th>
-								<th style="text-align:center">Resultado</th>
-								<th style="text-align:center">Apuesta</th>
-								<th style="text-align:center">Apostante</th>
-								<th style="text-align:center">Ganancia</th>
-                                <? 
-                                	if($_GET["admin"]=="anopeludo") echo '<th style="text-align:center">Id</th>';
-								?>
-							</tr>
-						</thead>
-						<tbody>
-					  <? 
-						if($_GET["admin"]=="anopeludo"){
-							include "tabla_admin.php";							
-						}else{
-							include "tabla_no_admin.php";
-						}
-					?>
-                 </tbody>
-                </table>  
+					echo '<tr>';
+						echo '<td style="text-align:center">';
+							if($rowApu["acertada"]==1){
+								echo '<i class="icon-ok"></i>';
+							}else if($rowApu["acertada"]==2){
+								echo '<i class="icon-remove"></i>';
+							}else{
+								echo '<i class="icon-time"></i>';
+							}
+						echo '</td>';
+						echo '<td>'.$rowApu["apuesta"].'</td>';
+						echo '<td style="text-align:center">'.$rowApu["cotizacion"].'</td>';
+						echo '<td style="text-align:center">'.$rowApu["apostado"].'&euro;</td>';
+						echo '<td style="text-align:center">';
+							$ganancia=0;
+							if($rowApu["acertada"]==1){
+								$ganancia= ($rowApu["apostado"] * $rowApu["cotizacion"])-$rowApu["apostado"];
+							}else if($rowApu["acertada"]==2){
+								$ganancia=$rowApu["apostado"] * -1;
+							}
+							echo $ganancia.'&euro;';
+							$totalGan=$totalGan+ $ganancia;
+						echo '</td>';
+                   	echo '</tr>';
+				}mysql_free_result($resultApuestas);
+				echo mysql_error();
+				echo '<tr><td style="text-align:right" colspan="4"><strong>Ganancia Total</strong></td><td>'.$totalGan.'&euro;</td></tr>';
+			?>
                   
-                  <? 
-				  //Instrucciones INSER
-					  if($_GET["admin"]=="anopeludo"){
-						  echo '
-							<p>fecha= 2012-05-23 18:00:00<br>banderas=<br>
-							   cro.png<br>
-							  cze.png<br>
-							  den.png<br>
-							  eng.png<br>
-							  esp.png<br>
-							  fra.png<br>
-							  ger.png<br>
-							  gre.png<br>
-							  irl.png<br>
-							  ita.png<br>
-							  ned.png<br>
-							  pol.png<br>
-							  por.png<br>
-							  rus.png<br>
-							  swe.png<br>
-							  ukr.png</p>';
-					  }
-  				?>
-</div>
-				<!--container -->
-			</div>
-		</div>
-	</div>
+            </tbody>
+        </table>            
+                            <? 
+							echo '</div></td></tr>';
+				}mysql_free_result($result);
+			?>
+            	
+            </tbody>
+        </table>                   
+<?}?>
 
-	<script
-		src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
+ </div>
+ </div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="../bootstrap_new/js/bootstrap.min.js"></script>
 </body>
 </html>
+

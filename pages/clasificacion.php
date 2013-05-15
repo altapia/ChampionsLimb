@@ -72,7 +72,7 @@
 		}if($_GET["fase"]=="cuartos"){
 			$queryFase=" and p.fase = 'CUARTOS' ";
 		}if($_GET["fase"]=="semi"){
-			$queryFase=" and p.fase = 'SEMI' ";
+			$queryFase=" and p.fase = 'SEMIFINAL' ";
 		}if($_GET["fase"]=="final"){
 			$queryFase=" and p.fase = 'FINAL' ";
 		}
@@ -189,7 +189,7 @@
 		}if($_GET["fase"]=="cuartos"){
 			$queryFase=" and p.fase = 'CUARTOS' ";
 		}if($_GET["fase"]=="semi"){
-			$queryFase=" and p.fase = 'SEMI' ";
+			$queryFase=" and p.fase = 'SEMIFINAL' ";
 		}if($_GET["fase"]=="final"){
 			$queryFase=" and p.fase = 'FINAL' ";
 		}
@@ -286,7 +286,7 @@
 							<li><a href="../pages/octavos.php">Octavos de final</a></li>
 							<li><a href="../pages/cuartos.php">Cuartos de final</a></li>
 							<li><a href="../pages/semifinal.php">Semifinal</a></li>
-				<!--			<li ><a href="../pages/final.php">Final</a></li>-->
+							<li><a href="../pages/final.php">Final</a></li>
 						</ul>
 					</li>
 					<li><a href="../pages/apuestas.php">Apuestas</a></li>
@@ -375,7 +375,7 @@
 	}if($_GET["fase"]=="cuartos"){
 		$queryFase=" and p.fase = 'CUARTOS' ";
 	}if($_GET["fase"]=="semi"){
-		$queryFase=" and p.fase = 'SEMI' ";
+		$queryFase=" and p.fase = 'SEMIFINAL' ";
 	}if($_GET["fase"]=="final"){
 		$queryFase=" and p.fase = 'FINAL' ";
 	}
