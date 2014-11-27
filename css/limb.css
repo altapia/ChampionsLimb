@@ -1,0 +1,35 @@
+.error{
+    background-color: #fdf7f7;  
+    border-color: #d9534f;
+    border-left: 3px solid #d9534f;
+    color: #d9534f;
+    padding: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.info{
+    background-color: #f4f8fa;  
+    border-color: #5bc0de;
+    border-left: 3px solid #5bc0de;
+    color: #5bc0de;
+    padding: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.warn{
+    background-color: #fcf8f2;  
+    border-color: #f0ad4e;
+    border-left: 3px solid #f0ad4e;
+    color: #f0ad4e;
+    padding: 5px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}

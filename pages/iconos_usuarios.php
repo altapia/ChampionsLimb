@@ -2,7 +2,7 @@
 date_default_timezone_set('Europe/Madrid');
 
 function get_ico_usuario($nombre){
-	$ico="eurologo.png";
+	$ico="logo.png";
 	if(strtolower($nombre)=="zato"){
 		$ico="barbol.png";
 	}else if(strtolower($nombre)=="tapia"){
@@ -24,7 +24,7 @@ function get_ico_usuario($nombre){
 	}else if(strtolower($nombre)=="rulo"){
 		$ico="trompetilla.png";
 	}else if(strtolower($nombre)=="eurolimbo"){
-		$ico="eurologo.png";
+		$ico="logo.png";
 	}				
 	return $ico;
 }

@@ -65,80 +65,26 @@
 	}
 
 	$apostador='';
-	
+	echo 'var arrDatos=[';
 	$i=1;
-	
-
-
-	if(isset($_GET["fase"]) && ($_GET["fase"]=='octavos' || $_GET["fase"]=='cuartos' || $_GET["fase"]=='semifinal' || $_GET["fase"]=='final')) {
-		$auxChart=0;
-		echo 'var arrDatos=[ {dataPoints: [';
-		while ($row=mysql_fetch_array($result)){
-			if($apostador!=$row["nombre"]){
-				$i=1;
-				if($apostador!=''){
-					echo ',';
-				}
-				
-				$auxChart=$auxChart+10;
-				echo '{x: '.$auxChart.',y:'.$row["ganancia"].',label:"'.$row["nombre"].'"}';
-
-				$apostador=$row["nombre"];
-
-			}else{
-				echo ',{x:'.$i.',y:'.$row["ganancia"].'}';
+	while ($row=mysql_fetch_array($result)){
+		if($apostador!=$row["nombre"]){
+			$i=1;
+			if($apostador!=''){
+				echo ']},';
 			}
-			$i++;
-		}mysql_free_result($result);	
-		echo ']}];';
-?>
-		var chart = new CanvasJS.Chart("chart_div_canvasjs", {            
-				title:{
-					text: "Evolución de apostante por partido"
-				},
-				data:arrDatos,				
-				axisY:{
-					suffix: "€",
-					stripLines:[{
-					 			value:0,
-								color:"red",
-					            }
-					]
-				},
-				toolTip:{
-        			enabled: true,       //disable here
-        			animationEnabled: true //disable here
-      			}
+			echo '{type: "spline",name:"'.$row["nombre"].'",showInLegend: true,dataPoints:[{x:'.$i.',y:'.$row["ganancia"].'}';
+			$apostador=$row["nombre"];
 
-			});
-		//alert(arrDatos[0].dataPoints.length);
-		if(arrDatos[0].dataPoints.length>0){
-			chart.render();
+		}else{
+			echo ',{x:'.$i.',y:'.$row["ganancia"].'}';
 		}
-
-<?php
-
-
-	}else{
-		echo 'var arrDatos=[';
-		while ($row=mysql_fetch_array($result)){
-			if($apostador!=$row["nombre"]){
-				$i=1;
-				if($apostador!=''){
-					echo ']},';
-				}
-				echo '{type: "spline",name:"'.$row["nombre"].'",showInLegend: true,dataPoints:[{x:'.$i.',y:'.$row["ganancia"].'}';							
-				$apostador=$row["nombre"];
-
-			}else{
-				echo ',{x:'.$i.',y:'.$row["ganancia"].'}';
-			}
-			$i++;
-		}mysql_free_result($result);	
-		echo ']}];';
-
+		$i++;
+	}mysql_free_result($result);	
+	echo ']}];';
 ?>
-		var chart = new CanvasJS.Chart("chart_div_canvasjs", {            
+
+			var chart = new CanvasJS.Chart("chart_div_canvasjs", {            
 				title:{
 					text: "Evolución de apostante por partido"
 				},
@@ -152,32 +98,26 @@
 					            }
 					]
 				},
-				toolTip:{             
+				axisX:{
+					interval: 1
+				},toolTip:{             
         			content: function(e){
           				var content;
-          				content = e.entries[0].dataSeries.name + " <strong>"+e.entries[0].dataPoint.y + "</strong>" ;
+          				content = e.entries[0].dataSeries.name + " <strong>"+e.entries[0].dataPoint.y  ;
           				return content;
         			},
-        			enabled: true,       //disable here
-        			animationEnabled: true //disable here
       			}
-
 			});
-		chart.render();
-<?php
+			chart.render();
 
-	}
-	
-?>
+
+
 
 
 //**********GANANACIA ACUMULADA DEL APOSTNATE POR PARTIDO APOSTADO
 
 //SE GENERA EL ARRAY DE DATOS EN PHP
 <?php
-	//Sólo se muestra si la fase tiene más de un partido por apostante
-	if(!isset($_GET["fase"]) || $_GET["fase"]=='total' || $_GET["fase"]=='grupos' || $_GET["fase"]=='octavos_c'){
-
 	$query='SELECT a.nombre,partido, ROUND(ganancia,2) as ganancia FROM (
 				SELECT 
 				    partido, 
@@ -263,12 +203,7 @@
       			}
 			});
 			chart2.render();			
-		
-
-<?php
-	}
-?>		
-	}
+		}
     </script>
 
 
