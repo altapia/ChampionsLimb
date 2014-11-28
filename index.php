@@ -312,7 +312,7 @@
  					}
  				});
 			}else{
-				console.log("no movil");
+				console.log("no es un movil");
 			}
 		});
 
